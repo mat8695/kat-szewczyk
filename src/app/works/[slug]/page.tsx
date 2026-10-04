@@ -5,7 +5,7 @@ import Navigation from "@/components/Navigation/Navigation";
 import WorkHero from "@/components/WorkHero/WorkHero";
 import WorkQuote from "@/components/WorkQuote/WorkQuote";
 import Footer from "@/components/Footer/Footer";
-import { getWebSettings, resolveOgImage } from "@/lib/seo";
+import { getProjectMetadata } from "@/lib/seo";
 
 export async function generateStaticParams() {
   const projects = await getProjects();
@@ -14,30 +14,20 @@ export async function generateStaticParams() {
     .map((p) => ({ slug: p.slug }));
 }
 
-// Not a statically-known route in webSettings.pages (that's for fixed
-// site pages like / and /works) — a per-project route builds its own
-// metadata from the project's own fields instead, falling back to the
-// same global Default OG Image when the project has no cover image.
+// Generated from the project's own content — no per-project SEO entry
+// required. The optional metaTitle/metaDescription/ogImage fields on the
+// project override it where set; see getProjectMetadata for the chain.
+// getProjectBySlug is React-cached, so this shares one query with the page
+// body below rather than fetching twice.
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const [project, settings] = await Promise.all([getProjectBySlug(slug), getWebSettings()]);
-  if (!project) return {};
-
-  const ogImage = resolveOgImage(project.coverImage, settings?.ogImage);
-
-  return {
-    title: project.title,
-    description: project.hoverDescription,
-    openGraph: {
-      title: project.title,
-      description: project.hoverDescription,
-      images: ogImage ? [ogImage] : undefined,
-    },
-  };
+  // Canonical comes from the route param rather than the CMS slug field,
+  // so it always matches the URL actually being served.
+  return getProjectMetadata(await getProjectBySlug(slug), `/works/${slug}`);
 }
 
 export default async function WorkPage({

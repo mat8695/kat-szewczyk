@@ -63,6 +63,32 @@ export const projectType = defineType({
       type: "array",
       of: [{ type: "image", options: { hotspot: true } }],
     }),
+    // Optional SEO overrides. Each falls back to existing project content
+    // (see src/lib/seo.ts), so none of these need filling in — set one only
+    // to override what's generated automatically.
+    defineField({
+      name: "metaTitle",
+      title: "Meta Title (SEO override)",
+      description:
+        "Leave empty to use the project title plus the site name automatically.",
+      type: "string",
+    }),
+    defineField({
+      name: "metaDescription",
+      title: "Meta Description (SEO override)",
+      description:
+        "Leave empty to fall back to the Hover Description, then the English description.",
+      type: "text",
+      rows: 3,
+    }),
+    defineField({
+      name: "ogImage",
+      title: "OG Image (SEO override)",
+      description:
+        "Leave empty to fall back to the Cover Image, then the global Default OG Image.",
+      type: "image",
+      options: { hotspot: true },
+    }),
     defineField({
       name: "quote",
       title: "Quote",

@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { client } from "@/sanity/lib/client";
 import type { SanityProject } from "@/components/Works/types";
 import type { SanityServiceItem, SanityServiceCategory } from "@/components/Services/types";
@@ -39,6 +40,9 @@ const PROJECT_BY_SLUG_QUERY = `
       ...,
       "metadata": asset->metadata
     },
+    metaTitle,
+    metaDescription,
+    ogImage,
     quote,
     quoteBackgroundAnimation{
       "fileUrl": file.asset->url
@@ -55,7 +59,12 @@ export async function getProjects(): Promise<SanityProject[]> {
   }
 }
 
-export async function getProjectBySlug(slug: string): Promise<SanityProject | null> {
+// Wrapped in React cache(): /works/[slug] resolves the same project twice
+// per request — once in generateMetadata, once in the page body — and this
+// collapses that into a single query.
+export const getProjectBySlug = cache(async function getProjectBySlug(
+  slug: string
+): Promise<SanityProject | null> {
   try {
     const project = await client.fetch<SanityProject | null>(
       PROJECT_BY_SLUG_QUERY,
@@ -66,7 +75,7 @@ export async function getProjectBySlug(slug: string): Promise<SanityProject | nu
   } catch {
     return null;
   }
-}
+});
 
 const SERVICE_ITEMS_QUERY = `
   *[_type == "serviceItem"] | order(order asc) {

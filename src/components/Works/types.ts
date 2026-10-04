@@ -29,6 +29,10 @@ export interface SanityProject {
   descriptionEN?: string;
   descriptionPL?: string;
   gallery?: SanityImageRef[];
+  // Optional SEO overrides — see src/lib/seo.ts for the fallback chain.
+  metaTitle?: string;
+  metaDescription?: string;
+  ogImage?: SanityImageRef;
   quote?: string;
   quoteBackgroundAnimation?: SanityQuoteBackgroundAnimation;
 }
