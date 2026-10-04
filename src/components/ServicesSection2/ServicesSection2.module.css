@@ -115,16 +115,34 @@
   flex-shrink: 0;
 }
 
+/* Wrapper around the CMS description's paragraphs. The gap reproduces the
+   blank line the old single-block `white-space: pre-line` rendering drew
+   between paragraphs: 1.5em resolves against this element's own 14px
+   font-size, giving the same 21px as one empty line box. */
 .description {
-  margin: 0;
+  display: flex;
+  flex-direction: column;
+  /* .bodyInner is align-items: flex-start, so without this the wrapper would
+     shrink-to-fit and change where the text wraps. */
+  width: 100%;
+  gap: 1.5em;
   font-family: 'Booton', Arial, Helvetica, sans-serif;
   font-size: 14px;
   font-weight: 500;
   line-height: 1.5;
   color: #f7a9c5;
-  /* Blank lines typed in the CMS description become paragraph breaks. */
+}
+
+.paragraph {
+  margin: 0;
+  /* Single newlines inside a CMS paragraph still render as line breaks;
+     blank lines are already split into separate .paragraph blocks. */
   white-space: pre-line;
   word-break: break-word;
+  /* Even out the ragged right edge so no line is left noticeably short.
+     Must stay after `white-space`: that shorthand also resets
+     text-wrap-mode, so declaring balance first would lose it. */
+  text-wrap: balance;
 }
 
 @media (max-width: 810px) {

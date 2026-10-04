@@ -1,0 +1,90 @@
+/* Mirrors Hero.module.css — same shell (full-viewport dark column with
+   40px/80px padding and justify-between), just three children instead of
+   Hero's. With the design's 1440x1024 frame those three heights
+   (52 + 70 + 60) leave two equal 381px gaps, which is what lands the
+   "404" on the frame's vertical centre. */
+.notFound {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 40px 80px;
+  box-sizing: border-box;
+  background-color: #1e1e1e;
+}
+
+.navSpacer {
+  flex-shrink: 0;
+  width: 100%;
+  height: 52px;
+}
+
+/* ── 404 ─────────────────────────────────────────────── */
+
+.codeWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+/* Identical to Hero's .heartAnimation — same sizing curve and opacity, so
+   the heart reads at the same scale on both pages. */
+.heartAnimation {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(55vw, 55vh, 650px);
+  /* Fallback before the JSON loads; GridAnimation overrides this inline
+     with the source file's own "aspect" value. */
+  aspect-ratio: 1;
+  opacity: 0.45;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.code {
+  position: relative;
+  z-index: 1;
+  max-width: 914px;
+  font-family: 'Reckless Standard M-TRIAL', Georgia, serif;
+  font-size: 64px;
+  font-weight: 400;
+  line-height: normal;
+  color: #f7a9c5;
+  text-align: center;
+}
+
+/* ── Bottom bar ──────────────────────────────────────── */
+
+/* Hero's .bottomBar splits its two buttons to the edges; here the single
+   "Back to home" button is centred. Same 17px vertical padding and
+   overflow clip so the Button's hover growth can't widen the page. */
+.bottomBar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 17px 0;
+  overflow: hidden;
+}
+
+/* ── Responsive ──────────────────────────────────────── */
+
+@media (max-width: 810px) {
+  .notFound {
+    padding: 24px;
+  }
+
+  .heartAnimation {
+    width: min(80vw, 500px);
+  }
+
+  .code {
+    font-size: 48px;
+  }
+}

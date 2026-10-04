@@ -28,6 +28,16 @@ function ServiceColumn({ category, language, onLanguageChange }: ServiceColumnPr
 
   const description = language === "en" ? category.descriptionEN : category.descriptionPL;
 
+  // Blank lines typed in the CMS split the text into separate <p> blocks
+  // rather than relying on `white-space: pre-line` to render them inside one
+  // block. Chromium's line balancer only balances until it exhausts a ~6-line
+  // budget per block, so in a single <p> the last paragraph was always left
+  // ragged; as its own block each paragraph gets balanced independently.
+  const paragraphs = (description ?? "")
+    .split(/\r?\n[ \t]*\r?\n/)
+    .map((paragraph) => paragraph.trim())
+    .filter(Boolean);
+
   // CSS owns the collapsed resting state (height 0 / opacity 0); GSAP only
   // animates the transition — same split as WorkHero's read-more panel and
   // AboutOverlay's slide. Skipped on mount so the closed state doesn't get
@@ -94,7 +104,15 @@ function ServiceColumn({ category, language, onLanguageChange }: ServiceColumnPr
             onChange={onLanguageChange}
             className={styles.languageSwitch}
           />
-          {description && <p className={styles.description}>{description}</p>}
+          {paragraphs.length > 0 && (
+            <div className={styles.description}>
+              {paragraphs.map((paragraph, index) => (
+                <p key={index} className={styles.paragraph}>
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>
