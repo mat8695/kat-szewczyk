@@ -106,6 +106,12 @@
   .tagline {
     font-size: 36px;
     text-align: left;
+    text-wrap: balance;
+  }
+
+  /* Forced desktop line breaks fight balancing on narrow screens. */
+  .tagline br {
+    display: none;
   }
 }
 

@@ -18,9 +18,9 @@ const HEART_ANIMATION_SRC = "/animations/kat%20anim.json";
 
 const TAGLINE = (
   <>
-    I'm a designer with a special love
+    I'm a designer with a special love{" "}
     <br />
-    for visual communication and
+    for visual communication and{" "}
     <br />
     turning chaos into clarity.
   </>
