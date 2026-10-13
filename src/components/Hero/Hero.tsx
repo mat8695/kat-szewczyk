@@ -115,7 +115,7 @@ export default function Hero({ onOpenAbout }: HeroProps) {
           <h1 className={styles.tagline}>{TAGLINE}</h1>
           <div className={styles.mobileActions}>
             <Button href="/works">works</Button>
-            <Button onClick={onOpenAbout}>read about</Button>
+            <Button onClick={onOpenAbout}>about me</Button>
           </div>
         </div>
       </section>
@@ -141,7 +141,7 @@ export default function Hero({ onOpenAbout }: HeroProps) {
           <Button href="/works">works</Button>
         </div>
         <div className={styles.bottomBarRight}>
-          <Button onClick={onOpenAbout}>read about</Button>
+          <Button onClick={onOpenAbout}>about me</Button>
         </div>
       </div>
     </section>
